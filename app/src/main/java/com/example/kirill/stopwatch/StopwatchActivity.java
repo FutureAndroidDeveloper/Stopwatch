@@ -3,6 +3,7 @@ package com.example.kirill.stopwatch;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,13 +12,27 @@ import java.util.Locale;
 public class StopwatchActivity extends Activity {
 
     private int seconds = 0;
-    private boolean running = ;
+    private boolean running;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
+
+        // Restore activity instance
+        if (savedInstanceState != null) {
+            seconds = savedInstanceState.getInt("seconds");
+            running = savedInstanceState.getBoolean("running");
+        }
+
         runTimer();
+    }
+
+    // Save instance of activity
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt("seconds", seconds);
+        savedInstanceState.putBoolean("running", running);
     }
 
     private void runTimer() {
