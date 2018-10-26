@@ -35,16 +35,15 @@ public class StopwatchActivity extends Activity {
         super.onPause();
         wasRunning = running;
         running = false;
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        
         if (wasRunning) {
             running = true;
         }
-
     }
 
     // Save instance of activity
