@@ -27,9 +27,11 @@ public class StopwatchActivity extends Activity {
         if (savedInstanceState != null) {
             seconds = savedInstanceState.getInt("seconds");
             running = savedInstanceState.getBoolean("running");
+            blinking = savedInstanceState.getBoolean("blinking");
+            wasBlinked = savedInstanceState.getBoolean("wasBlinking");
         }
 
-        //runTimer();
+        runTimer();
         runBlink();
     }
 
@@ -38,6 +40,8 @@ public class StopwatchActivity extends Activity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("seconds", seconds);
         savedInstanceState.putBoolean("running", running);
+        savedInstanceState.putBoolean("blinking", blinking);
+        savedInstanceState.putBoolean("wasBlinked", wasBlinked);
     }
 
     private void runTimer() {
@@ -89,10 +93,8 @@ public class StopwatchActivity extends Activity {
 
         if (blinking) {
             blinking = false;
-            buttonView.setText(R.string.blinkOff);
         } else {
             blinking = true;
-            buttonView.setText(R.string.blinkOn);
         }
     }
 
@@ -106,9 +108,4 @@ public class StopwatchActivity extends Activity {
         running = false;
     }
 
-    // Reset the stopwatch running when the Reset button is clicked.
-    public void onClickReset(View view) {
-        running = false;
-        seconds = 0;
-    }
 }
