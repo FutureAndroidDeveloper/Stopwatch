@@ -1,10 +1,12 @@
 package com.example.kirill.stopwatch;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -13,6 +15,8 @@ public class StopwatchActivity extends Activity {
 
     private int seconds = 0;
     private boolean running;
+    private boolean blinking;
+    private boolean wasBlinked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +29,8 @@ public class StopwatchActivity extends Activity {
             running = savedInstanceState.getBoolean("running");
         }
 
-        runTimer();
+        //runTimer();
+        runBlink();
     }
 
     // Save instance of activity
@@ -57,6 +62,38 @@ public class StopwatchActivity extends Activity {
                 handler.postDelayed(this, 1000);
             }
         });
+    }
+
+    private void runBlink() {
+        final Button buttonView = (Button) findViewById(R.id.blink);
+        final Handler handler = new Handler();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (blinking && !wasBlinked) {
+                    buttonView.setBackgroundColor(Color.RED);
+                    wasBlinked = true;
+                } else if (blinking && wasBlinked) {
+                    buttonView.setBackgroundColor(Color.BLUE);
+                    wasBlinked = false;
+                }
+
+                handler.postDelayed(this, 1000);
+            }
+        });
+    }
+
+    public void onClickBlink(View view) {
+        Button buttonView = (Button) findViewById(R.id.blink);
+
+        if (blinking) {
+            blinking = false;
+            buttonView.setText(R.string.blinkOff);
+        } else {
+            blinking = true;
+            buttonView.setText(R.string.blinkOn);
+        }
     }
 
     // Start the stopwatch running when the Start button is clicked.
